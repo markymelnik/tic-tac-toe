@@ -1,0 +1,43 @@
+* {
+    border: 1px dotted red;
+    display: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+}
+
+.header h1 {
+    font-size: 50px;
+    margin: 50px;
+}
+
+.main {
+    display: flex;
+    justify-content: center;
+}
+
+.game-board {
+    display: grid;
+    grid-template: repeat(3, 100px) / repeat(3, 100px);
+    justify-content: center;
+}
+
+.footer {
+    display: flex;
+    justify-content: center;
+    margin-top: auto;
+}
+
+.footer h2 {
+    margin: 25px;
+}
