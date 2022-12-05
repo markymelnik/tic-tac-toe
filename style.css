@@ -31,6 +31,7 @@
 .game-board {
     display: grid;
     margin: 50px;
+    padding: 20px;
     grid-template: repeat(3, 100px) / repeat(3, 100px);
     justify-content: center;
 }
@@ -48,7 +49,7 @@
 .results {
     display: flex;
     justify-content: center;
-    width: 200px;
+    width: 400px;
     margin: 50px;
 }
 
