@@ -1,5 +1,5 @@
 * {
-    border: 1px dotted red;
+    background-color: rgb(31, 31, 31);
     display: border-box;
     margin: 0;
     padding: 0;
@@ -14,10 +14,12 @@
 .header {
     display: flex;
     justify-content: center;
+    border-bottom: 1px solid white;
 }
 
 .header h1 {
-    font-size: 50px;
+    color: white;
+    font-size: 60px;
     margin: 50px;
 }
 
@@ -30,20 +32,25 @@
 
 .game-board {
     display: grid;
-    margin: 50px;
+    margin-top: 80px;
     padding: 20px;
-    grid-template: repeat(3, 100px) / repeat(3, 100px);
+    grid-template: repeat(3, 120px) / repeat(3, 120px);
     justify-content: center;
 }
 
 .tile {
     display: flex;
+    color: white;
     justify-content: center;
     align-items: center;
-    font-size: 50px;
-    height: 100px;
-    width: 100px;
-    border: 1px solid black;
+    font-size: 60px;
+    height: 120px;
+    width: 120px;
+    border: 1px solid white;
+}
+
+.tile:hover {
+    background-color: rgb(53, 92, 103);
 }
 
 .tile:nth-child(1), .tile:nth-child(2), .tile:nth-child(3) {
@@ -51,7 +58,6 @@
 }
 
 .tile:nth-child(7), .tile:nth-child(8), .tile:nth-child(9) {
-    border-top: none;
     border-bottom: none;
 }
 
@@ -60,7 +66,6 @@
 }
 
 .tile:nth-child(3), .tile:nth-child(6), .tile:nth-child(9) {
-    border-left: none;
     border-right: none;
 }
 
@@ -68,19 +73,22 @@
     display: flex;
     justify-content: center;
     width: 400px;
-    margin: 50px;
+    margin-top: 100px;
 }
 
 .results-msg {
-    font-size: 30px;
+    color: white;
+    font-size: 40px;
 }
 
 .footer {
     display: flex;
     justify-content: center;
     margin-top: auto;
+    border-top: 1px solid white;
 }
 
 .footer h2 {
+    color: white;
     margin: 25px;
 }

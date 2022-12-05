@@ -21,14 +21,16 @@ const Playercreator = (() => {
 
 const Gameboard = (() => {
 
-    let board = [['','',''],['','',''],['','','']]
+    let board = [['','',''],
+                 ['','',''],
+                 ['','','']];
 
     const newBoard = () => [...board];
 
     const setTiles = (row, col, choice) => {
         for (let i = 0; i < board.length; i++) {
             for (let j = 0; j < board[i].length; j++) {
-                board[row][col] = choice
+                board[row][col] = choice;
             }
         }
     }
@@ -95,9 +97,9 @@ const gameFlowController = (() => {
         const row = tile.target.getAttribute('row');
         const col = tile.target.getAttribute('col');
 
-        counter++;
-
         if (Gameboard.newBoard()[row][col]) return;
+
+        counter++;
 
         Gameboard.setTiles(row, col, playerTurn());
 
@@ -156,4 +158,5 @@ const winnerCheck = (() => {
     return {
         checkResult
     }
+
 })();
