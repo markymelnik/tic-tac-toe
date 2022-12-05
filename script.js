@@ -85,7 +85,6 @@ const gameFlowController = (() => {
     }
 
     const gameBoardArea = displayController.gameBoard;
-
     displayController.createTiles(Gameboard.newBoard());
 
     gameBoardArea.addEventListener('click', (tile) => {
@@ -94,15 +93,50 @@ const gameFlowController = (() => {
         const col = tile.target.getAttribute('col');
 
         if (Gameboard.newBoard()[row][col]) return;
-        
+
         Gameboard.setTiles(row, col, playerTurn());
 
         displayController.replaceBoard();
 
         displayController.createTiles(Gameboard.newBoard());
 
+        winnerCheck.checkWin(Gameboard.newBoard());
+
         console.log(Gameboard.newBoard());
 
     })
+})();
+
+const winnerCheck = (() => {
+
+    const resultMessage = document.querySelector('.results-msg');
+
+    let playOne = Playercreator.playerOne.choice;
+
+    let win = false;
+
+    const checkWin = (arr) => {
+        for (let i = 0; i < arr.length; i++) {
+            for (let j = 0; j < arr[i].length; j++) {
+                if (arr[i][0] === playOne && arr[i][1] === playOne && arr[i][2] === playOne) {
+                   win = true;
+                } else if (arr[0][j] === playOne && arr[1][j] === playOne && arr[2][j] === playOne) {
+                    win = true;
+                } else if (arr[0][0] === playOne && arr[1][1] === playOne && arr[2][2] === playOne) {
+                    win = true;
+                } else if (arr[0][2] === playOne && arr[1][1] === playOne && arr[2][0] === playOne) {
+                    win = true;
+                }
+            }
+            if (win) {
+                resultMessage.textContent = `You won!`
+            }
+        }
+    }
+
+    return {
+        checkWin,
+        win
+    }
 
 })();
