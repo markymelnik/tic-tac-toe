@@ -57,9 +57,16 @@ const displayController = (() => {
         }   
     }
 
+    const replaceBoard = () => {
+        while (gameBoard.hasChildNodes()) {
+            gameBoard.removeChild(gameBoard.firstChild)
+        }
+    }
+
     return {
         gameBoard,
-        createTiles
+        createTiles,
+        replaceBoard
     }
 
 })();
@@ -87,6 +94,8 @@ const gameFlowController = (() => {
         const col = tile.target.getAttribute('col');
         
         Gameboard.setTiles(row, col, playerTurn());
+
+        displayController.replaceBoard();
 
         displayController.createTiles(Gameboard.newBoard());
 

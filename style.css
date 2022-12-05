@@ -33,6 +33,10 @@
 }
 
 .tile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 50px;
     height: 100px;
     width: 100px;
     border: 1px solid black;
