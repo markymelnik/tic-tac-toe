@@ -92,6 +92,8 @@ const gameFlowController = (() => {
         
         const row = tile.target.getAttribute('row');
         const col = tile.target.getAttribute('col');
+
+        if (Gameboard.newBoard()[row][col]) return;
         
         Gameboard.setTiles(row, col, playerTurn());
 
