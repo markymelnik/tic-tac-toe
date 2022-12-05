@@ -1,6 +1,6 @@
 // Tic-tac-toe
 
-const Playerselection = (() => {
+const Playercreator = (() => {
 
     const playerFactory = (player, choice) => {
         return {
@@ -11,20 +11,24 @@ const Playerselection = (() => {
 
     let playerOne = playerFactory('Mark', 'X');
     let playerTwo = playerFactory('Kareem', 'O');
-    
+
+    return {
+        playerOne,
+        playerTwo
+    }
+
 })();
 
 const Gameboard = (() => {
 
-    let gameboard = [['', '', ''], ['', '', ''], ['', '', '']];
+    let board = [['','',''],['','',''],['','','']]
 
-    const newBoard = () => [...gameboard];
+    const newBoard = () => [...board];
 
-    const setTiles = (index, choice) => {
-        for (let i = 0; i < gameboard.length; i++) {
-            for (let j = 0; j < gameboard[i].length; j++) {
-                gameboard[i][j][index] = choice;
-                console.log({index, choice})
+    const setTiles = (row, col, choice) => {
+        for (let i = 0; i < board.length; i++) {
+            for (let j = 0; j < board[i].length; j++) {
+                board[row][col] = choice
             }
         }
     }
@@ -42,15 +46,15 @@ const displayController = (() => {
 
     const createTiles = (arr) => {
         for (let i = 0; i < arr.length; i++) {
-            for (let j = 0; j < arr.length; j++) {
+            for (let j = 0; j < arr[i].length; j++) {
                 let tile = document.createElement('div');
                 tile.classList = 'tile';
+                tile.textContent = arr[i][j];
                 tile.setAttribute('row', i);
-                tile.setAttribute('column', j);
+                tile.setAttribute('col', j);
                 gameBoard.append(tile);
             }
-        }
-        
+        }   
     }
 
     return {
@@ -62,6 +66,32 @@ const displayController = (() => {
 
 const gameFlowController = (() => {
 
+    let isPlayerOneTurn = true;
+
+    const playerTurn = () => {
+        if (isPlayerOneTurn) {
+            isPlayerOneTurn = false;
+            return Playercreator.playerOne.choice;
+        } 
+        isPlayerOneTurn = true;
+        return Playercreator.playerTwo.choice;
+    }
+
+    const gameBoardArea = displayController.gameBoard;
+
     displayController.createTiles(Gameboard.newBoard());
+
+    gameBoardArea.addEventListener('click', (tile) => {
+        
+        const row = tile.target.getAttribute('row');
+        const col = tile.target.getAttribute('col');
+        
+        Gameboard.setTiles(row, col, playerTurn());
+
+        displayController.createTiles(Gameboard.newBoard());
+
+        console.log(Gameboard.newBoard());
+
+    })
 
 })();
