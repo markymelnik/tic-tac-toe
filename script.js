@@ -26,7 +26,6 @@ const Gameboard = (() => {
                 gameboard[i][j][index] = choice;
                 console.log({index, choice})
             }
-            console.log("Test");
         }
     }
 
@@ -34,5 +33,35 @@ const Gameboard = (() => {
         newBoard,
         setTiles
     }
+
+})();
+
+const displayController = (() => {
+
+    const gameBoard = document.querySelector('.game-board');
+
+    const createTiles = (arr) => {
+        for (let i = 0; i < arr.length; i++) {
+            for (let j = 0; j < arr.length; j++) {
+                let tile = document.createElement('div');
+                tile.classList = 'tile';
+                tile.setAttribute('row', i);
+                tile.setAttribute('column', j);
+                gameBoard.append(tile);
+            }
+        }
+        
+    }
+
+    return {
+        gameBoard,
+        createTiles
+    }
+
+})();
+
+const gameFlowController = (() => {
+
+    displayController.createTiles(Gameboard.newBoard());
 
 })();

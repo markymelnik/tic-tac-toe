@@ -32,6 +32,12 @@
     justify-content: center;
 }
 
+.tile {
+    height: 100px;
+    width: 100px;
+    border: 1px solid black;
+}
+
 .footer {
     display: flex;
     justify-content: center;
