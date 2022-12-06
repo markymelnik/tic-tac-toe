@@ -9,10 +9,13 @@ const playerCreator = (() => {
         }
     }
 
-    let playerOne = playerFactory('Mark', 'X');
-    let playerTwo = playerFactory('Kareem', 'O');
+    let choice = { choiceOne: 'X', choiceTwo: 'O'};
+
+    let playerOne = playerFactory('Mark', choice.choiceOne);
+    let playerTwo = playerFactory('Kareem', choice.choiceTwo);
 
     return {
+        choice,
         playerOne,
         playerTwo
     }
@@ -77,32 +80,28 @@ const roundCheck = (() => {
 
     const resultMessage = document.querySelector('.results-msg');
 
-    let playerOne = playerCreator.playerOne.choice;
-    let playerTwo = playerCreator.playerTwo.choice;
-
+    let isThree = false;
     let win = false;
     let loss = false;
 
-    const checkRoundResult = (arr) => {
-        for (let i = 0; i < arr.length; i++) {
-            for (let j = 0; j < arr[i].length; j++) {
-                if (arr[i][0] === playerOne  && arr[i][1] === playerOne && arr[i][2] === playerOne) {
-                   win = true;
-                } else if (arr[0][j] === playerOne && arr[1][j] === playerOne && arr[2][j] === playerOne) {
-                    win = true;
-                } else if (arr[0][0] === playerOne && arr[1][1] === playerOne && arr[2][2] === playerOne) {
-                    win = true;
-                } else if (arr[0][2] === playerOne && arr[1][1] === playerOne && arr[2][0] === playerOne) {
-                    win = true;
-                } else if (arr[i][0] === playerTwo  && arr[i][1] === playerTwo && arr[i][2] === playerTwo) {
-                    loss = true;
-                } else if (arr[0][j] === playerTwo && arr[1][j] === playerTwo && arr[2][j] === playerTwo) {
-                    loss = true;
-                } else if (arr[0][0] === playerTwo && arr[1][1] === playerTwo && arr[2][2] === playerTwo) {
-                    loss = true;
-                } else if (arr[0][2] === playerTwo && arr[1][1] === playerTwo && arr[2][0] === playerTwo) {
-                    loss = true;
-                }
+    const checkForWin = (arr, choice) => {
+        for (let i = 0; i < 3; i++) {
+            if (arr[i][0] === choice && arr[i][1] === choice && arr[i][2] === choice) {
+                isThree = true;
+            } else if (arr[0][i] === choice && arr[1][i] === choice && arr[2][i] === choice) {
+                isThree = true;
+            } else if (arr[1][1] === choice && arr[0][0] === choice && arr[2][2] === choice) {
+                isThree = true;
+            } else if (arr[1][1] === choice && arr[2][0] === choice && arr[0][2] === choice) {
+                isThree = true;
+            }       
+        }
+
+        if (isThree) {
+            if (choice === playerCreator.choice.choiceOne) {
+                win = true;
+            } else if (choice === playerCreator.choice.choiceTwo) {
+                loss = true;
             }
         }
     }
@@ -112,17 +111,16 @@ const roundCheck = (() => {
             resultMessage.textContent = `Keep going!`;
         } else if (counter == 9 && !win && !loss) {
             resultMessage.textContent = `Tie game. No winner.`;
-        } else if (win) {
+        } else if (win && !loss) {
             resultMessage.textContent = `You won!`;
-        } else if (loss) {
+        } else if (loss && !win) {
             resultMessage.textContent = `You lost!`;
         }
-        
     }
 
     return {
-        checkRoundResult,
-        displayRoundResult
+        displayRoundResult,
+        checkForWin
     }
 
 })();
@@ -130,20 +128,25 @@ const roundCheck = (() => {
 const gameFlowController = (() => {
 
     let isPlayerOneTurn = true;
+    let playerChoice = '';
+
+    let choiceOne = playerCreator.choice.choiceOne;
+    let choiceTwo = playerCreator.choice.choiceTwo;
 
     const playerTurn = () => {
         if (isPlayerOneTurn) {
             isPlayerOneTurn = false;
-            return playerCreator.playerOne.choice;
+            playerChoice = choiceOne;
+            return choiceOne;
         } 
         isPlayerOneTurn = true;
-        return playerCreator.playerTwo.choice;
+        playerChoice = choiceTwo;
+        return choiceTwo;
     }
 
     const gameBoardArea = displayController.gameBoard;
 
-
-    let placementCounter = 0;
+    let turnCounter = 0;
 
     displayController.createTiles(gameBoard.newBoard());
 
@@ -154,7 +157,7 @@ const gameFlowController = (() => {
 
         if (gameBoard.newBoard()[row][col]) return;
 
-        placementCounter++;
+        turnCounter++;
 
         gameBoard.setTiles(row, col, playerTurn());
 
@@ -162,10 +165,10 @@ const gameFlowController = (() => {
 
         displayController.createTiles(gameBoard.newBoard());
 
-        roundCheck.checkRoundResult(gameBoard.newBoard());
+        roundCheck.checkForWin(gameBoard.newBoard(), playerChoice);
 
-        roundCheck.displayRoundResult(placementCounter);
+        roundCheck.displayRoundResult(turnCounter);
 
     })
-    
+
 })();
