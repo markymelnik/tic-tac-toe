@@ -1,6 +1,6 @@
 // Tic-tac-toe
 
-const Playercreator = (() => {
+const playerCreator = (() => {
 
     const playerFactory = (player, choice) => {
         return {
@@ -19,7 +19,7 @@ const Playercreator = (() => {
 
 })();
 
-const Gameboard = (() => {
+const gameBoard = (() => {
 
     let board = [['','',''],
                  ['','',''],
@@ -73,56 +73,17 @@ const displayController = (() => {
 
 })();
 
-const gameFlowController = (() => {
-
-    let isPlayerOneTurn = true;
-
-    const playerTurn = () => {
-        if (isPlayerOneTurn) {
-            isPlayerOneTurn = false;
-            return Playercreator.playerOne.choice;
-        } 
-        isPlayerOneTurn = true;
-        return Playercreator.playerTwo.choice;
-    }
-
-    const gameBoardArea = displayController.gameBoard;
-
-    let counter = 0;
-
-    displayController.createTiles(Gameboard.newBoard());
-
-    gameBoardArea.addEventListener('click', (tile) => {
-        
-        const row = tile.target.getAttribute('row');
-        const col = tile.target.getAttribute('col');
-
-        if (Gameboard.newBoard()[row][col]) return;
-
-        counter++;
-
-        Gameboard.setTiles(row, col, playerTurn());
-
-        displayController.replaceBoard();
-
-        displayController.createTiles(Gameboard.newBoard());
-
-        winnerCheck.checkResult(Gameboard.newBoard(), counter);
-
-    })
-})();
-
-const winnerCheck = (() => {
+const roundCheck = (() => {
 
     const resultMessage = document.querySelector('.results-msg');
 
-    let playerOne = Playercreator.playerOne.choice;
-    let playerTwo = Playercreator.playerTwo.choice;
+    let playerOne = playerCreator.playerOne.choice;
+    let playerTwo = playerCreator.playerTwo.choice;
 
     let win = false;
     let loss = false;
 
-    const checkResult = (arr, counter) => {
+    const checkRoundResult = (arr) => {
         for (let i = 0; i < arr.length; i++) {
             for (let j = 0; j < arr[i].length; j++) {
                 if (arr[i][0] === playerOne  && arr[i][1] === playerOne && arr[i][2] === playerOne) {
@@ -143,20 +104,68 @@ const winnerCheck = (() => {
                     loss = true;
                 }
             }
-            if (counter < 9 && !win && !loss) {
-                resultMessage.textContent = `Keep going!`
-            } else if (counter == 9 && !win && !loss) {
-                resultMessage.textContent = `Tie game. No winner.`
-            } else if (win) {
-                resultMessage.textContent = `You won!`
-            } else if (loss) {
-                resultMessage.textContent = `You lost!`
-            }
         }
     }
 
-    return {
-        checkResult
+    const displayRoundResult = (counter) => {
+        if (counter < 9 && !win && !loss) {
+            resultMessage.textContent = `Keep going!`;
+        } else if (counter == 9 && !win && !loss) {
+            resultMessage.textContent = `Tie game. No winner.`;
+        } else if (win) {
+            resultMessage.textContent = `You won!`;
+        } else if (loss) {
+            resultMessage.textContent = `You lost!`;
+        }
+        
     }
 
+    return {
+        checkRoundResult,
+        displayRoundResult
+    }
+
+})();
+
+const gameFlowController = (() => {
+
+    let isPlayerOneTurn = true;
+
+    const playerTurn = () => {
+        if (isPlayerOneTurn) {
+            isPlayerOneTurn = false;
+            return playerCreator.playerOne.choice;
+        } 
+        isPlayerOneTurn = true;
+        return playerCreator.playerTwo.choice;
+    }
+
+    const gameBoardArea = displayController.gameBoard;
+
+
+    let placementCounter = 0;
+
+    displayController.createTiles(gameBoard.newBoard());
+
+    gameBoardArea.addEventListener('click', (tile) => {
+        
+        const row = tile.target.getAttribute('row');
+        const col = tile.target.getAttribute('col');
+
+        if (gameBoard.newBoard()[row][col]) return;
+
+        placementCounter++;
+
+        gameBoard.setTiles(row, col, playerTurn());
+
+        displayController.replaceBoard();
+
+        displayController.createTiles(gameBoard.newBoard());
+
+        roundCheck.checkRoundResult(gameBoard.newBoard());
+
+        roundCheck.displayRoundResult(placementCounter);
+
+    })
+    
 })();
