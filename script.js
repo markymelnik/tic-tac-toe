@@ -2,14 +2,14 @@
 
 const playerCreator = (() => {
 
-    const playerFactory = (player, choice) => {
+    const playerFactory = (name, choice) => {
         return {
-            player,
+            name,
             choice
         }
     }
 
-    let choice = { choiceOne: 'X', choiceTwo: 'O'};
+    let choice = { choiceOne: 'X', choiceTwo: 'O' };
 
     let playerOne = playerFactory('Mark', choice.choiceOne);
     let playerTwo = playerFactory('Kareem', choice.choiceTwo);
@@ -22,7 +22,7 @@ const playerCreator = (() => {
 
 })();
 
-const gameBoard = (() => {
+const Gameboard = (() => {
 
     let board = [['','',''],
                  ['','',''],
@@ -38,9 +38,15 @@ const gameBoard = (() => {
         }
     }
 
+    let resetBoard = () => {
+        board = [['','',''], ['','',''], ['','','']];
+    }
+    
+
     return {
         newBoard,
-        setTiles
+        setTiles,
+        resetBoard
     }
 
 })();
@@ -76,15 +82,19 @@ const displayController = (() => {
 
 })();
 
-const roundCheck = (() => {
+const roundWinCheck = (() => {
 
     const resultMessage = document.querySelector('.results-msg');
+    const nextRoundBtn = document.querySelector('.next-round-btn');
 
     let isThree = false;
     let win = false;
     let loss = false;
 
-    const checkForWin = (arr, choice) => {
+    let playerOneScore = 0;
+    let playerTwoScore = 0;
+
+    const checkForRoundWin = (arr, choice) => {
         for (let i = 0; i < 3; i++) {
             if (arr[i][0] === choice && arr[i][1] === choice && arr[i][2] === choice) {
                 isThree = true;
@@ -110,28 +120,60 @@ const roundCheck = (() => {
         if (counter < 9 && !win && !loss) {
             resultMessage.textContent = `Keep going!`;
         } else if (counter == 9 && !win && !loss) {
-            resultMessage.textContent = `Tie game. No winner.`;
+            resultMessage.textContent = `Tie round. No winner.`;
         } else if (win && !loss) {
-            resultMessage.textContent = `You won!`;
+            resultMessage.textContent = `${playerCreator.playerOne.name} won this round!`;
         } else if (loss && !win) {
-            resultMessage.textContent = `You lost!`;
+            resultMessage.textContent = `${playerCreator.playerTwo.name} won this round!`;
         }
     }
 
+    const newRound = (counter) => {
+        if (win && !loss) { 
+            playerOneScore++;
+            nextRoundBtn.style.visibility = "visible";
+            console.log(`Player One Score: ${playerOneScore}`);
+            console.log(`Player Two Score: ${playerTwoScore}`);
+        } else if (!win && loss) {
+            playerTwoScore++;
+            nextRoundBtn.style.visibility = "visible";
+            console.log(`Player One Score: ${playerOneScore}`);
+            console.log(`Player Two Score: ${playerTwoScore}`);
+        } else if (counter == 9) {
+            nextRoundBtn.style.visibility = "visible";
+            console.log("No score.")
+        }
+    }
+
+    const roundReset = () => {
+        isThree = false;
+        win = false;
+        loss = false;
+        resultMessage.textContent = '';
+    }
+
+
     return {
+        checkForRoundWin,
         displayRoundResult,
-        checkForWin
+        newRound,
+        playerOneScore,
+        playerTwoScore,
+        nextRoundBtn,
+        roundReset
     }
 
 })();
 
 const gameFlowController = (() => {
 
-    let isPlayerOneTurn = true;
-    let playerChoice = '';
+    const choiceOne = playerCreator.choice.choiceOne;
+    const choiceTwo = playerCreator.choice.choiceTwo;
 
-    let choiceOne = playerCreator.choice.choiceOne;
-    let choiceTwo = playerCreator.choice.choiceTwo;
+    let playerChoice = '';
+    let isPlayerOneTurn = true;
+
+    let turnCounter = 0;
 
     const playerTurn = () => {
         if (isPlayerOneTurn) {
@@ -145,29 +187,46 @@ const gameFlowController = (() => {
     }
 
     const gameBoardArea = displayController.gameBoard;
+    const nextRoundBtn = document.querySelector('.next-round-btn');
 
-    let turnCounter = 0;
-
-    displayController.createTiles(gameBoard.newBoard());
+    displayController.createTiles(Gameboard.newBoard());
 
     gameBoardArea.addEventListener('click', (tile) => {
         
         const row = tile.target.getAttribute('row');
         const col = tile.target.getAttribute('col');
 
-        if (gameBoard.newBoard()[row][col]) return;
+        if (Gameboard.newBoard()[row][col]) return;
 
         turnCounter++;
 
-        gameBoard.setTiles(row, col, playerTurn());
+        Gameboard.setTiles(row, col, playerTurn());
 
         displayController.replaceBoard();
 
-        displayController.createTiles(gameBoard.newBoard());
+        displayController.createTiles(Gameboard.newBoard());
 
-        roundCheck.checkForWin(gameBoard.newBoard(), playerChoice);
+        roundWinCheck.checkForRoundWin(Gameboard.newBoard(), playerChoice);
 
-        roundCheck.displayRoundResult(turnCounter);
+        roundWinCheck.displayRoundResult(turnCounter);
+
+        roundWinCheck.newRound(turnCounter);
+    
+    })
+
+    nextRoundBtn.addEventListener('click', () => {
+
+        nextRoundBtn.style.visibility = "hidden";
+    
+        Gameboard.resetBoard(Gameboard.newBoard);
+
+        turnCounter = 0;
+
+        displayController.replaceBoard();
+
+        displayController.createTiles(Gameboard.newBoard());
+
+        roundWinCheck.roundReset();
 
     })
 

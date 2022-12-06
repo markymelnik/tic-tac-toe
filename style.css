@@ -20,7 +20,7 @@
 .header h1 {
     color: white;
     font-size: 60px;
-    margin: 50px;
+    margin: 40px;
 }
 
 .main {
@@ -32,7 +32,7 @@
 
 .game-board {
     display: grid;
-    margin-top: 80px;
+    margin-top: 60px;
     padding: 20px;
     grid-template: repeat(3, 120px) / repeat(3, 120px);
     justify-content: center;
@@ -47,10 +47,12 @@
     height: 120px;
     width: 120px;
     border: 1px solid white;
+    opacity: 100%;
 }
 
 .tile:hover {
-    background-color: rgb(53, 92, 103);
+    background-color: rgb(202, 156, 255);
+    opacity: 25%;
 }
 
 .tile:nth-child(1), .tile:nth-child(2), .tile:nth-child(3) {
@@ -73,12 +75,28 @@
     display: flex;
     justify-content: center;
     width: 400px;
-    margin-top: 100px;
+    margin-top: 60px;
 }
 
 .results-msg {
     color: white;
     font-size: 40px;
+}
+
+.next-round {
+    display: flex;
+    justify-content: center;
+    width: 400px;
+    margin-top: 60px;
+}
+
+.next-round-btn {
+    color: white;
+    background-color:rgb(130, 70, 199);
+    border: none;
+    cursor: pointer;
+    padding: 20px;
+    font-size: 20px;
 }
 
 .footer {
