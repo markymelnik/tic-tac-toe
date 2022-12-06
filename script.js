@@ -42,7 +42,6 @@ const Gameboard = (() => {
         board = [['','',''], ['','',''], ['','','']];
     }
     
-
     return {
         newBoard,
         setTiles,
@@ -87,12 +86,19 @@ const roundWinCheck = (() => {
     const resultMessage = document.querySelector('.results-msg');
     const nextRoundBtn = document.querySelector('.next-round-btn');
 
+    const playerOneScore = document.querySelector('.player-one-score');
+    const playerTwoScore = document.querySelector('.player-two-score');
+
+    playerOneScore.textContent = `${playerCreator.playerOne.name}'s Score:`;
+    playerTwoScore.textContent = `${playerCreator.playerTwo.name}'s Score:`;
+
+    let playerOneScoreTracker = 0;
+    let playerTwoScoreTracker = 0;
+
+
     let isThree = false;
     let win = false;
     let loss = false;
-
-    let playerOneScore = 0;
-    let playerTwoScore = 0;
 
     const checkForRoundWin = (arr, choice) => {
         for (let i = 0; i < 3; i++) {
@@ -130,18 +136,15 @@ const roundWinCheck = (() => {
 
     const newRound = (counter) => {
         if (win && !loss) { 
-            playerOneScore++;
+            playerOneScoreTracker++;
             nextRoundBtn.style.visibility = "visible";
-            console.log(`Player One Score: ${playerOneScore}`);
-            console.log(`Player Two Score: ${playerTwoScore}`);
+            playerOneScore.textContent = `${playerCreator.playerOne.name}'s Score: ${playerOneScoreTracker}`;
         } else if (!win && loss) {
-            playerTwoScore++;
+            playerTwoScoreTracker++;
             nextRoundBtn.style.visibility = "visible";
-            console.log(`Player One Score: ${playerOneScore}`);
-            console.log(`Player Two Score: ${playerTwoScore}`);
+            playerTwoScore.textContent = `${playerCreator.playerTwo.name}'s Score: ${playerTwoScoreTracker}`;
         } else if (counter == 9) {
             nextRoundBtn.style.visibility = "visible";
-            console.log("No score.")
         }
     }
 
@@ -149,7 +152,7 @@ const roundWinCheck = (() => {
         isThree = false;
         win = false;
         loss = false;
-        resultMessage.textContent = '';
+        resultMessage.textContent = 'Make your move!';
     }
 
 

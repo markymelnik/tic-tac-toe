@@ -1,5 +1,16 @@
+@font-face {
+    font-family: Kalam;
+    src: url(fonts/Kalam.ttf);
+}
+
+@font-face {
+    font-family: KalamBold;
+    src: url(fonts/KalamBold.ttf);
+}
+
 * {
     background-color: rgb(31, 31, 31);
+    font-family: Kalam;
     display: border-box;
     margin: 0;
     padding: 0;
@@ -19,11 +30,35 @@
 
 .header h1 {
     color: white;
-    font-size: 60px;
-    margin: 40px;
+    font-size: 75px;
+    margin: 20px;
 }
 
 .main {
+    display: flex;
+    color: white;
+    justify-content: space-around;
+}
+
+.main-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 200px;
+}
+
+.scores {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    font-size: 25px;
+}
+
+.player-one-score, .player-two-score {
+    text-align: left;
+}
+
+.main-middle {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -79,7 +114,6 @@
 }
 
 .results-msg {
-    color: white;
     font-size: 40px;
 }
 
@@ -99,6 +133,13 @@
     font-size: 20px;
 }
 
+.main-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 200px;
+}
+
 .footer {
     display: flex;
     justify-content: center;
@@ -108,5 +149,5 @@
 
 .footer h2 {
     color: white;
-    margin: 25px;
+    margin: 20px;
 }
