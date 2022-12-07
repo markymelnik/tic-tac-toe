@@ -81,10 +81,10 @@ const displayController = (() => {
 
 })();
 
-const roundWinCheck = (() => {
+const playRound = (() => {
 
     const resultMessage = document.querySelector('.results-msg');
-    const nextRoundBtn = document.querySelector('.next-round-btn');
+    const nextRoundBtn = document.querySelector('.next-round-btn'); 
 
     const playerOneScore = document.querySelector('.player-one-score');
     const playerTwoScore = document.querySelector('.player-two-score');
@@ -94,7 +94,6 @@ const roundWinCheck = (() => {
 
     let playerOneScoreTracker = 0;
     let playerTwoScoreTracker = 0;
-
 
     let isThree = false;
     let win = false;
@@ -139,6 +138,7 @@ const roundWinCheck = (() => {
             playerOneScoreTracker++;
             nextRoundBtn.style.visibility = "visible";
             playerOneScore.textContent = `${playerCreator.playerOne.name}'s Score: ${playerOneScoreTracker}`;
+
         } else if (!win && loss) {
             playerTwoScoreTracker++;
             nextRoundBtn.style.visibility = "visible";
@@ -154,7 +154,6 @@ const roundWinCheck = (() => {
         loss = false;
         resultMessage.textContent = 'Make your move!';
     }
-
 
     return {
         checkForRoundWin,
@@ -190,6 +189,8 @@ const gameFlowController = (() => {
     }
 
     const gameBoardArea = displayController.gameBoard;
+
+    const resultMessage = document.querySelector('.results-msg');
     const nextRoundBtn = document.querySelector('.next-round-btn');
 
     displayController.createTiles(Gameboard.newBoard());
@@ -200,36 +201,25 @@ const gameFlowController = (() => {
         const col = tile.target.getAttribute('col');
 
         if (Gameboard.newBoard()[row][col]) return;
-
         turnCounter++;
-
         Gameboard.setTiles(row, col, playerTurn());
-
         displayController.replaceBoard();
-
         displayController.createTiles(Gameboard.newBoard());
-
-        roundWinCheck.checkForRoundWin(Gameboard.newBoard(), playerChoice);
-
-        roundWinCheck.displayRoundResult(turnCounter);
-
-        roundWinCheck.newRound(turnCounter);
+        playRound.checkForRoundWin(Gameboard.newBoard(), playerChoice);
+        playRound.displayRoundResult(turnCounter);
+        playRound.newRound(turnCounter);
     
     })
 
     nextRoundBtn.addEventListener('click', () => {
 
         nextRoundBtn.style.visibility = "hidden";
-    
-        Gameboard.resetBoard(Gameboard.newBoard);
-
         turnCounter = 0;
-
+        isPlayerOneTurn = true;
+        Gameboard.resetBoard(Gameboard.newBoard);
         displayController.replaceBoard();
-
         displayController.createTiles(Gameboard.newBoard());
-
-        roundWinCheck.roundReset();
+        playRound.roundReset();
 
     })
 

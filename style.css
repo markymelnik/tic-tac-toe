@@ -19,7 +19,7 @@
 .container {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    min-height: 90vh;
 }
 
 .header {
@@ -29,7 +29,7 @@
 }
 
 .header h1 {
-    color: white;
+    color: rgb(202, 156, 255);
     font-size: 75px;
     margin: 20px;
 }
@@ -44,18 +44,14 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 200px;
+    width: 300px;
 }
 
 .scores {
     display: flex;
     flex-direction: column;
     gap: 50px;
-    font-size: 25px;
-}
-
-.player-one-score, .player-two-score {
-    text-align: left;
+    font-size: 30px;
 }
 
 .main-middle {
@@ -75,19 +71,18 @@
 
 .tile {
     display: flex;
-    color: white;
+    color:rgb(188, 130, 255);
     justify-content: center;
     align-items: center;
     font-size: 60px;
     height: 120px;
     width: 120px;
     border: 1px solid white;
-    opacity: 100%;
 }
 
 .tile:hover {
-    background-color: rgb(202, 156, 255);
-    opacity: 25%;
+    background-color:rgb(89, 71, 110);
+    cursor: pointer;
 }
 
 .tile:nth-child(1), .tile:nth-child(2), .tile:nth-child(3) {
@@ -109,11 +104,12 @@
 .results {
     display: flex;
     justify-content: center;
-    width: 400px;
-    margin-top: 60px;
+    width: 500px;
+    margin-top: 40px;
 }
 
 .results-msg {
+    color:rgb(202, 156, 255);
     font-size: 40px;
 }
 
@@ -121,23 +117,48 @@
     display: flex;
     justify-content: center;
     width: 400px;
-    margin-top: 60px;
+    margin-top: 30px;
 }
 
 .next-round-btn {
-    color: white;
-    background-color:rgb(130, 70, 199);
-    border: none;
+    color: rgb(188, 130, 255);
+    background-color: rgb(31, 31, 31);
+    border: 2px solid white;
     cursor: pointer;
-    padding: 20px;
-    font-size: 20px;
+    padding: 15px;
+    font-size: 25px;
+    border-radius: 10px;
+    width: 175px;
 }
 
+.next-round-btn:hover {
+    background-color: rgb(89, 71, 110);
+}
 .main-right {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 200px;
+    position: relative;
+    width: 300px;
+}
+
+.reset-btn {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    color: rgb(188, 130, 255);
+    background-color: rgb(31, 31, 31);
+    padding: 10px;
+    font-size: 25px;
+    border: 2px solid white;
+    border-radius: 10px;
+    width: 120px;
+    height: 60px;
+    cursor: pointer;
+}
+
+.reset-btn:hover {
+    background-color:rgb(89, 71, 110);
 }
 
 .footer {
@@ -149,5 +170,5 @@
 
 .footer h2 {
     color: white;
-    margin: 20px;
+    margin-top: 30px;
 }
