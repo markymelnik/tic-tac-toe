@@ -138,31 +138,43 @@ const playRound = (() => {
             playerOneScoreTracker++;
             nextRoundBtn.style.visibility = "visible";
             playerOneScore.textContent = `${playerCreator.playerOne.name}'s Score: ${playerOneScoreTracker}`;
-
+            if (playerOneScoreTracker > 2 && playerTwoScoreTracker < 3) {
+                resultMessage.textContent = `${playerCreator.playerOne.name} wins!!!`
+                nextRoundBtn.style.visibility = "hidden";
+            }
         } else if (!win && loss) {
             playerTwoScoreTracker++;
             nextRoundBtn.style.visibility = "visible";
             playerTwoScore.textContent = `${playerCreator.playerTwo.name}'s Score: ${playerTwoScoreTracker}`;
-        } else if (counter == 9) {
+            if (playerOneScoreTracker < 3 && playerTwoScoreTracker > 2) {
+                resultMessage.textContent = `${playerCreator.playerTwo.name} wins!!!`
+                nextRoundBtn.style.visibility = "hidden";
+            }     
+        } else if (counter == 9 && !win && !loss) {
             nextRoundBtn.style.visibility = "visible";
         }
     }
 
-    const roundReset = () => {
+    const resetRound = () => {
         isThree = false;
         win = false;
         loss = false;
         resultMessage.textContent = 'Make your move!';
     }
 
+    const resetScore = () => {
+        playerOneScoreTracker = 0;
+        playerTwoScoreTracker = 0;
+        playerOneScore.textContent = `${playerCreator.playerOne.name}'s Score:`;
+        playerTwoScore.textContent = `${playerCreator.playerTwo.name}'s Score:`;
+    }
+
     return {
         checkForRoundWin,
         displayRoundResult,
         newRound,
-        playerOneScore,
-        playerTwoScore,
-        nextRoundBtn,
-        roundReset
+        resetRound,
+        resetScore
     }
 
 })();
@@ -189,9 +201,8 @@ const gameFlowController = (() => {
     }
 
     const gameBoardArea = displayController.gameBoard;
-
-    const resultMessage = document.querySelector('.results-msg');
     const nextRoundBtn = document.querySelector('.next-round-btn');
+    const resetBtn = document.querySelector('.reset-btn');
 
     displayController.createTiles(Gameboard.newBoard());
 
@@ -219,8 +230,18 @@ const gameFlowController = (() => {
         Gameboard.resetBoard(Gameboard.newBoard);
         displayController.replaceBoard();
         displayController.createTiles(Gameboard.newBoard());
-        playRound.roundReset();
+        playRound.resetRound();
 
+    })
+
+    resetBtn.addEventListener('click', () => {
+        turnCounter = 0;
+        isPlayerOneTurn = true;
+        Gameboard.resetBoard(Gameboard.newBoard);
+        displayController.replaceBoard();
+        displayController.createTiles(Gameboard.newBoard());
+        playRound.resetRound();
+        playRound.resetScore();
     })
 
 })();
